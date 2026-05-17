@@ -1,37 +1,55 @@
 # GitHub Issue Drafts
 
-These are drafts for GitHub issues. They are written in simple words on purpose.
+These are the GitHub issue bodies for the course.
 
-Labels to use:
+Tone rule: the issues should be **beginner-friendly and explicit**, but not condescending. Assume the learner can program, but is new to machine learning and PyTorch.
 
-- `course`
-- `learning`
-- `pytorch`
-- `beginner`
-- `weekly-project`
+Every issue is **HITL** because the learner must run the work, inspect outputs, make a small judgment, and write a short explanation.
+
+Labels to use on all issues:
+
 - `HITL`
+- `course`
+- `beginner`
 
-Optional labels:
+Other labels used where useful:
 
 - `setup`
+- `learning`
+- `pytorch`
+- `weekly-project`
 - `debugging`
 - `computer-vision`
 - `capstone`
 
 ---
 
-## Issue 1: Set up the local uv + PyTorch course repo
+## Issue 1: Set up the local ML lab and smoke-test PyTorch/CUDA
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `setup`, `pytorch`, `beginner`  
 **Time estimate:** 2–4 hours  
 **Blocked by:** None
 
-### What to do
+### Project name
 
-Create the local environment for the whole course.
+**Local ML Lab Smoke Test**
 
-This issue is not about learning ML yet. It is about making sure the machine can run the lessons.
+### Why this exists
+
+Before learning ML, make sure the local machine can run the course. The goal is not to perfect the environment forever. The goal is to get a working local path with CPU fallback and optional CUDA on the RTX 4070 SUPER.
+
+### What to build
+
+Create a tiny environment-check project that proves Python, uv, PyTorch, torchvision, Jupyter, and device selection work.
+
+### Exact files to create
+
+- `weeks/week-00-setup/check_environment.py`
+- `weeks/week-00-setup/setup_report.md`
+- `src/mlcourse/__init__.py`
+- `src/mlcourse/device.py`
+- `artifacts/week-00-setup/device_check.txt`
 
 ### Online resources
 
@@ -39,46 +57,112 @@ This issue is not about learning ML yet. It is about making sure the machine can
 - PyTorch Start Locally: https://docs.pytorch.org/get-started/locally/
 - PyTorch Learn the Basics: https://docs.pytorch.org/tutorials/beginner/basics/intro.html
 
-### Steps
+### Step-by-step work
 
-- [ ] Confirm `uv` works.
+- [ ] Confirm `uv --version` works.
 - [ ] Create a Python 3.12 virtual environment with `uv`.
-- [ ] Install basic tools: `numpy`, `matplotlib`, `pandas`, `scikit-learn`, `jupyter`, `ipykernel`, `tqdm`, `torchmetrics`.
-- [ ] Install PyTorch and torchvision using the official PyTorch install selector.
-- [ ] Check whether CUDA sees the RTX 4070 SUPER.
-- [ ] Make sure CPU fallback works.
-- [ ] Create folders: `weeks/`, `src/`, `data/`, `models/`, `artifacts/`.
-- [ ] Write down setup problems and fixes in a short note.
+- [ ] Install learning packages: `numpy`, `matplotlib`, `pandas`, `scikit-learn`, `jupyter`, `ipykernel`, `tqdm`, `torchmetrics`.
+- [ ] Install PyTorch and torchvision using the official PyTorch selector.
+- [ ] Create `src/mlcourse/device.py` with a function named `get_device()`.
+- [ ] `get_device()` should return CUDA if available, otherwise CPU.
+- [ ] Create `check_environment.py` that prints:
+  - Python version
+  - PyTorch version
+  - torchvision version
+  - whether CUDA is available
+  - GPU name if available
+  - result of a tiny tensor calculation
+- [ ] Save the same output into `artifacts/week-00-setup/device_check.txt`.
+- [ ] Write `setup_report.md` with:
+  - what worked
+  - what failed
+  - whether CUDA works
+  - what command should be used to run Python files in this repo
+
+### Command that should work
+
+```bash
+uv run python weeks/week-00-setup/check_environment.py
+```
+
+### Human checkpoint
+
+Read the output and decide:
+
+- Is the repo ready for CPU learning?
+- Is CUDA working?
+- If CUDA is not working, is that okay for now?
+
+### Debugging checklist
+
+- [ ] If `uv` fails, check it is on PATH.
+- [ ] If `torch` import fails, reinstall PyTorch from the official selector.
+- [ ] If CUDA is false, confirm the NVIDIA driver is installed, but do not block the course forever.
+- [ ] If Jupyter is annoying, continue with scripts first.
 
 ### Acceptance criteria
 
-- [ ] `uv run python -c "import torch; print(torch.__version__)"` works.
-- [ ] `torch.cuda.is_available()` result is known.
-- [ ] The repo has the planned folder structure.
-- [ ] The setup note says what works and what still needs fixing.
+- [ ] `uv run python weeks/week-00-setup/check_environment.py` runs.
+- [ ] `artifacts/week-00-setup/device_check.txt` exists.
+- [ ] `setup_report.md` says whether CUDA works.
+- [ ] `src/mlcourse/device.py` exists and provides `get_device()`.
+- [ ] The learner can explain the difference between CPU and GPU in one or two plain sentences.
 
 ### Expertise gained
 
-After this issue, I can set up and run a local PyTorch learning project without using Colab.
+After this issue, I can run a local PyTorch project, check whether my GPU is available, and continue safely even if CUDA is temporarily not working.
 
 ---
 
-## Issue 2: Week 1 — See learning happen by hand
+## Issue 2: Week 1 — Manual Line Learner: watch numbers learn
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 1
+**Blocked by:** #1
 
-### Simple goal
+### Project name
 
-Understand the core loop:
+**Manual Line Learner**
+
+### Why this exists
+
+Frameworks can hide the learning process. This project makes learning visible by using plain Python/NumPy first.
+
+### What to build
+
+Build a tiny model that learns the rule:
 
 ```text
-predict -> measure wrongness -> adjust -> repeat
+y = 2x + 1
 ```
 
-No PyTorch magic yet.
+The model should start with bad guesses for two knobs:
+
+- `weight`
+- `bias`
+
+Then it should repeatedly improve those knobs and show the loss going down.
+
+### Dataset
+
+Generate the data inside the script.
+
+Use this exact clean dataset first:
+
+```python
+x = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+y = 2 * x + 1
+```
+
+No download needed.
+
+### Exact files to create
+
+- `weeks/week-01-learning-loop/manual_line_learner.py`
+- `weeks/week-01-learning-loop/notes.md`
+- `artifacts/week-01-learning-loop/loss_curve.png`
+- `artifacts/week-01-learning-loop/before_after_predictions.csv`
 
 ### Online resources
 
@@ -86,54 +170,102 @@ No PyTorch magic yet.
 - TensorFlow Neural Network Playground: https://playground.tensorflow.org/
 - Google Machine Learning Crash Course: https://developers.google.com/machine-learning/crash-course
 
-### Mini-project
+### Step-by-step work
 
-Build a tiny number predictor by hand.
+- [ ] Create the dataset in code.
+- [ ] Start with intentionally wrong values, for example `weight = 0.0` and `bias = 0.0`.
+- [ ] Write a `predict(x, weight, bias)` function.
+- [ ] Write a simple loss function: average squared wrongness.
+- [ ] Print the first predictions before learning.
+- [ ] Run a training loop for about 100–500 steps.
+- [ ] At each step, adjust `weight` and `bias` a little.
+- [ ] Save loss values.
+- [ ] Plot the loss curve to `loss_curve.png`.
+- [ ] Save before/after predictions to `before_after_predictions.csv`.
+- [ ] Write `notes.md` explaining what changed and why loss went down.
 
-Example: the real rule is `y = 2x + 1`. Start with bad guesses for the model's knobs. Measure wrongness. Change the knobs. Watch the model get less wrong.
+### Important constraint
 
-### Steps
-
-- [ ] Make a tiny table of `x` and `y` values.
-- [ ] Write a tiny model with one or two knobs.
-- [ ] Make predictions.
-- [ ] Measure wrongness with a simple loss number.
-- [ ] Adjust the knobs manually or with a simple loop.
-- [ ] Plot wrongness over time.
-- [ ] Write a short note: “What does learning mean here?”
+Do **not** use PyTorch autograd in this issue. The point is to see the adjustment process without framework magic.
 
 ### Modification challenge
 
-Change the hidden rule from `y = 2x + 1` to another simple line. Predict what should change. Run it. Explain what happened.
+Change the hidden rule to:
+
+```text
+y = -3x + 2
+```
+
+Before running, write a prediction in `notes.md`:
+
+- What should the final `weight` become?
+- What should the final `bias` become?
+
+Then run it and compare.
+
+### Debugging checklist
+
+- [ ] If loss goes up, the adjustment direction may be backwards.
+- [ ] If loss changes too slowly, the step size may be too small.
+- [ ] If loss explodes, the step size may be too large.
+- [ ] If final predictions are bad, print the first five predictions every 50 steps.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-01-learning-loop/`.
-- [ ] It prints predictions before and after learning.
-- [ ] It shows loss going down.
-- [ ] The weekly note explains learning without using heavy math.
+- [ ] `manual_line_learner.py` runs with `uv run python weeks/week-01-learning-loop/manual_line_learner.py`.
+- [ ] The script prints starting and ending `weight` and `bias`.
+- [ ] Final `weight` and `bias` are close to the hidden rule.
+- [ ] `loss_curve.png` exists and shows loss going down.
+- [ ] `before_after_predictions.csv` exists.
+- [ ] `notes.md` explains the learning loop in plain words.
 
 ### Expertise gained
 
-After this issue, I can explain machine learning as repeated correction, not magic.
+After this issue, I can explain machine learning as repeated correction of adjustable knobs.
 
 ---
 
-## Issue 3: Week 2 — Learn PyTorch tensors and `backward()` gently
+## Issue 3: Week 2 — PyTorch Gradient Learner: same line project with `backward()`
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 2
+**Blocked by:** #2
 
-### Simple goal
+### Project name
 
-Learn the PyTorch building blocks without panic:
+**PyTorch Gradient Learner**
 
-- tensor = number box / number table
-- device = CPU or GPU
-- gradient = hint about which way to move
-- `backward()` = ask PyTorch to compute those hints
+### Why this exists
+
+Week 1 showed learning by hand. This week repeats the same idea in PyTorch so the framework feels less magical.
+
+### What to build
+
+Rebuild the line learner using PyTorch tensors, parameters, loss, `backward()`, and an optimizer.
+
+The visible idea should stay the same:
+
+```text
+predict -> measure wrongness -> ask PyTorch for adjustment hints -> adjust -> repeat
+```
+
+### Dataset
+
+Generate the same clean line dataset inside the script:
+
+```python
+x = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+y = 2 * x + 1
+```
+
+### Exact files to create
+
+- `weeks/week-02-pytorch-basics/torch_line_learner.py`
+- `weeks/week-02-pytorch-basics/notes.md`
+- `artifacts/week-02-pytorch-basics/gradient_trace.csv`
+- `artifacts/week-02-pytorch-basics/loss_curve.png`
+- `artifacts/week-02-pytorch-basics/cpu_or_cuda.txt`
 
 ### Online resources
 
@@ -141,111 +273,199 @@ Learn the PyTorch building blocks without panic:
 - PyTorch Tensors: https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html
 - PyTorch Autograd: https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html
 
-### Mini-project
+### Step-by-step work
 
-Rebuild the Week 1 tiny predictor in PyTorch.
-
-This time, let PyTorch compute the adjustment hints with `backward()`.
-
-### Steps
-
-- [ ] Create tensors.
-- [ ] Move tensors to CPU or CUDA device.
-- [ ] Make predictions with tensor math.
-- [ ] Compute loss.
+- [ ] Create tensors for `x` and `y`.
+- [ ] Use `get_device()` from `src/mlcourse/device.py` if it exists.
+- [ ] Create `weight` and `bias` tensors with `requires_grad=True`, or use `torch.nn.Linear` after first trying raw tensors.
+- [ ] Compute predictions.
+- [ ] Compute mean squared error loss.
 - [ ] Call `loss.backward()`.
-- [ ] Print parameter values and gradients.
-- [ ] Explain gradients as simple “move this way” hints.
+- [ ] Print gradients for the first few training steps.
+- [ ] Use an optimizer such as `torch.optim.SGD`.
+- [ ] Save a CSV with columns: `epoch`, `loss`, `weight`, `bias`, `weight_grad`, `bias_grad`.
+- [ ] Plot loss.
+- [ ] Write notes explaining `backward()` as “PyTorch calculating adjustment hints.”
 
 ### Modification challenge
 
-Run the same code on CPU and GPU if CUDA works. Confirm the answer is basically the same.
+Run the project twice:
+
+1. learning rate `0.001`
+2. learning rate `0.1`
+
+Before running, predict which one will learn faster or become unstable. Then explain what actually happened.
+
+### Debugging checklist
+
+- [ ] If gradients are `None`, check `requires_grad=True`.
+- [ ] If loss does not change, check that `optimizer.step()` is called.
+- [ ] If loss explodes, lower the learning rate.
+- [ ] If CPU/GPU errors happen, check all tensors are on the same device.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-02-pytorch-basics/`.
-- [ ] It uses tensors.
+- [ ] `torch_line_learner.py` runs.
+- [ ] It prints device information.
 - [ ] It calls `backward()`.
-- [ ] It prints gradients.
-- [ ] The weekly note explains `backward()` in simple words.
+- [ ] `gradient_trace.csv` exists and contains gradient values.
+- [ ] `loss_curve.png` exists.
+- [ ] `notes.md` explains tensors, gradients, and `backward()` in simple words.
 
 ### Expertise gained
 
-After this issue, I can use basic PyTorch tensors and explain autograd at a beginner intuition level.
+After this issue, I can use PyTorch tensors and explain autograd at a practical beginner level.
 
 ---
 
-## Issue 4: Week 3 — Train a number prediction model with a real PyTorch loop
+## Issue 4: Week 3 — Number Predictor Lab: train/evaluate/save a regression model
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 3
+**Blocked by:** #3
 
-### Simple goal
+### Project name
 
-Build a real training loop:
+**House-ish Price Predictor**
+
+### Why this exists
+
+This moves from a perfect toy line to a more realistic number-prediction workflow: data file, train/test split, model, evaluation, saved model, and plots.
+
+### What to build
+
+Generate a tiny fake housing-style dataset and train a model that predicts a price-like number.
+
+This is not a real estate model. It is a controlled dataset for learning.
+
+### Dataset
+
+Create a CSV file in code:
+
+- `data/generated/week-03-house-ish-prices.csv`
+
+Columns:
+
+- `size_m2`
+- `bedrooms`
+- `distance_from_center_km`
+- `price_k`
+
+Suggested hidden rule:
 
 ```text
-for each epoch:
-    predict
-    calculate loss
-    clear old gradients
-    backward
-    optimizer step
+price_k = 50 + 3 * size_m2 + 25 * bedrooms - 4 * distance_from_center_km + noise
 ```
+
+### Exact files to create
+
+- `weeks/week-03-number-prediction/train_price_predictor.py`
+- `weeks/week-03-number-prediction/notes.md`
+- `data/generated/week-03-house-ish-prices.csv`
+- `models/week-03-number-predictor.pt`
+- `artifacts/week-03-number-prediction/loss_curve.png`
+- `artifacts/week-03-number-prediction/predicted_vs_actual.png`
+- `artifacts/week-03-number-prediction/example_predictions.csv`
 
 ### Online resources
 
 - Learn PyTorch — 01 PyTorch Workflow: https://www.learnpytorch.io/01_pytorch_workflow/
 - PyTorch Optimization: https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html
 - PyTorch Save and Load Model: https://docs.pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html
-- Google ML Crash Course — loss / gradient descent exercises: https://developers.google.com/machine-learning/crash-course/exercises
+- Google ML Crash Course exercises: https://developers.google.com/machine-learning/crash-course/exercises
 
-### Mini-project
+### Step-by-step work
 
-Train a small model to predict numbers. Use train/test split. Plot predictions against true answers.
-
-### Steps
-
-- [ ] Create or load a tiny numeric dataset.
-- [ ] Split it into train and test data.
-- [ ] Build a simple PyTorch model.
-- [ ] Train with loss and optimizer.
+- [ ] Generate 200 fake examples and save them as CSV.
+- [ ] Load the CSV back from disk.
+- [ ] Split into 80% train and 20% test.
+- [ ] Normalize input features if needed.
+- [ ] Build a small PyTorch regression model.
+- [ ] Train for a fixed number of epochs.
+- [ ] Save loss values.
 - [ ] Evaluate on test data.
-- [ ] Save the model.
-- [ ] Plot actual values vs predicted values.
+- [ ] Save the model to `models/week-03-number-predictor.pt`.
+- [ ] Plot predicted price vs actual price.
+- [ ] Save 10 example predictions to CSV.
+- [ ] Write notes explaining train data vs test data.
 
 ### Modification challenge
 
-Change the learning rate. Before running, predict whether training will be slower, faster, or unstable. Then run and explain.
+Increase the noise in the generated data.
+
+Before running, write a prediction:
+
+- Will test error get better or worse?
+- Will the plot look tighter or messier?
+
+Then run and explain.
+
+### Debugging checklist
+
+- [ ] If loss is huge, inspect feature scales.
+- [ ] If train loss goes down but test loss is bad, explain overfitting in simple words.
+- [ ] If predictions are all similar, check learning rate and input normalization.
+- [ ] If model saving fails, check the `models/` folder exists.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-03-number-prediction/`.
-- [ ] It has a train/test split.
-- [ ] It has a visible training loop.
-- [ ] It saves a model file into `models/`.
-- [ ] It saves a plot into `artifacts/`.
+- [ ] The script creates the generated dataset CSV.
+- [ ] The script trains and evaluates a model.
+- [ ] The model file exists in `models/`.
+- [ ] `predicted_vs_actual.png` exists.
+- [ ] `example_predictions.csv` exists.
+- [ ] `notes.md` explains what train/test split means and why it matters.
 
 ### Expertise gained
 
-After this issue, I can train and evaluate a basic supervised PyTorch model.
+After this issue, I can build a basic supervised regression workflow in PyTorch.
 
 ---
 
-## Issue 5: Week 4 — Classification: teach a model to choose a label
+## Issue 5: Week 4 — Decision Boundary Lab: classify 2D points
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 4
+**Blocked by:** #4
 
-### Simple goal
+### Project name
 
-Understand classification.
+**Decision Boundary Lab**
 
-Regression predicts a number. Classification chooses a class, like “red dot” or “blue dot.”
+### Why this exists
+
+Classification is easier to understand when I can see the model drawing a border between groups.
+
+### What to build
+
+Train a classifier on 2D points and visualize the decision boundary.
+
+The model should answer:
+
+```text
+Is this point class 0 or class 1?
+```
+
+### Dataset
+
+Use scikit-learn to generate a toy dataset:
+
+```python
+from sklearn.datasets import make_blobs
+```
+
+Start with two easy clusters, then make the problem harder with more overlap.
+
+### Exact files to create
+
+- `weeks/week-04-classification/train_2d_classifier.py`
+- `weeks/week-04-classification/notes.md`
+- `data/generated/week-04-2d-points.csv`
+- `artifacts/week-04-classification/data_plot.png`
+- `artifacts/week-04-classification/decision_boundary.png`
+- `artifacts/week-04-classification/confusion_counts.json`
 
 ### Online resources
 
@@ -253,50 +473,95 @@ Regression predicts a number. Classification chooses a class, like “red dot”
 - Google ML Crash Course — Classification: https://developers.google.com/machine-learning/crash-course/classification
 - TensorFlow Neural Network Playground: https://playground.tensorflow.org/
 
-### Mini-project
+### Step-by-step work
 
-Train a model to classify simple 2D points. Draw the decision boundary so I can see what the model learned.
-
-### Steps
-
-- [ ] Create a tiny 2D dataset.
-- [ ] Plot the points with colors for labels.
-- [ ] Build a simple classifier.
-- [ ] Train it.
+- [ ] Generate 2D points and labels.
+- [ ] Save the points to CSV.
+- [ ] Plot the raw points by color.
+- [ ] Split into train and test data.
+- [ ] Build a simple PyTorch binary classifier.
+- [ ] Train with a classification loss.
 - [ ] Measure accuracy.
+- [ ] Count true positives, true negatives, false positives, and false negatives.
 - [ ] Plot the decision boundary.
-- [ ] Explain false positives / false negatives in plain words.
+- [ ] Write notes explaining what the boundary means.
 
 ### Modification challenge
 
-Change the dataset shape or the number of training points. Predict whether the model will do better or worse. Run and explain.
+Increase cluster overlap.
+
+Before running, predict:
+
+- Will accuracy go down?
+- Will the boundary become less useful?
+- Which mistakes do I expect to see?
+
+Then run and explain.
+
+### Debugging checklist
+
+- [ ] If accuracy is around 50%, check labels and loss function.
+- [ ] If shapes fail, print `X.shape` and `y.shape`.
+- [ ] If the boundary plot is blank, check the grid generation.
+- [ ] If loss does not move, lower the learning rate or inspect logits/probabilities.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-04-classification/`.
-- [ ] It trains a classifier.
-- [ ] It reports accuracy.
-- [ ] It shows a decision-boundary plot.
-- [ ] The weekly note explains classification mistakes simply.
+- [ ] The script trains a classifier.
+- [ ] `data_plot.png` shows the generated dataset.
+- [ ] `decision_boundary.png` shows the learned boundary.
+- [ ] `confusion_counts.json` exists.
+- [ ] `notes.md` explains at least one wrong prediction type in plain words.
 
 ### Expertise gained
 
-After this issue, I can explain how a model chooses between labels and how accuracy can hide some mistakes.
+After this issue, I can explain classification, accuracy, and simple classification mistakes visually.
 
 ---
 
-## Issue 6: Week 5 — Build a small neural network for nonlinear data
+## Issue 6: Week 5 — Hidden Layer Lab: beat the straight-line model
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 5
+**Blocked by:** #5
 
-### Simple goal
+### Project name
 
-Understand hidden layers.
+**Hidden Layer Lab**
 
-A hidden layer gives the model more flexible knobs. This helps when a straight line is not enough.
+### Why this exists
+
+A straight line cannot solve every classification problem. A hidden layer gives the model more flexible ways to bend the decision boundary.
+
+### What to build
+
+Train two models on the same nonlinear dataset:
+
+1. A simple linear classifier.
+2. A small neural network with one hidden layer.
+
+Compare them side by side.
+
+### Dataset
+
+Use scikit-learn:
+
+```python
+from sklearn.datasets import make_moons
+```
+
+Generate 500 two-dimensional points with moderate noise.
+
+### Exact files to create
+
+- `weeks/week-05-small-neural-networks/compare_linear_vs_mlp.py`
+- `weeks/week-05-small-neural-networks/notes.md`
+- `data/generated/week-05-moons.csv`
+- `artifacts/week-05-small-neural-networks/linear_boundary.png`
+- `artifacts/week-05-small-neural-networks/mlp_boundary.png`
+- `artifacts/week-05-small-neural-networks/model_comparison.csv`
+- `artifacts/week-05-small-neural-networks/loss_curves.png`
 
 ### Online resources
 
@@ -304,104 +569,178 @@ A hidden layer gives the model more flexible knobs. This helps when a straight l
 - 3Blue1Brown — But what is a Neural Network?: https://www.3blue1brown.com/lessons/neural-networks/
 - PyTorch — What is `torch.nn` really?: https://docs.pytorch.org/tutorials/beginner/nn_tutorial.html
 
-### Mini-project
+### Step-by-step work
 
-Train two models on a toy nonlinear dataset:
-
-1. A too-simple model.
-2. A small neural network with a hidden layer.
-
-Compare them visually.
-
-### Steps
-
-- [ ] Create or load a nonlinear 2D dataset.
-- [ ] Train a simple model.
-- [ ] Train a small neural network.
+- [ ] Generate the moon-shaped dataset.
+- [ ] Save it to CSV.
+- [ ] Plot the raw data.
+- [ ] Train a linear classifier.
+- [ ] Train a small MLP with one hidden layer.
 - [ ] Plot both decision boundaries.
-- [ ] Compare train/test accuracy.
-- [ ] Explain why the hidden layer helped or did not help.
+- [ ] Save a comparison table with train accuracy, test accuracy, and final loss.
+- [ ] Write notes explaining why the MLP can solve a problem the line struggles with.
 
 ### Modification challenge
 
-Change the number of hidden units. Predict what should happen. Run and explain.
+Change hidden units:
+
+- 4 hidden units
+- 16 hidden units
+- 64 hidden units
+
+Before running, predict whether more hidden units will always be better. Then compare.
+
+### Debugging checklist
+
+- [ ] If both models perform badly, inspect the labels and plots.
+- [ ] If the MLP does not improve, try more epochs or a smaller learning rate.
+- [ ] If train accuracy is high but test accuracy drops, explain overfitting.
+- [ ] If decision-boundary code is confusing, save intermediate grid predictions.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-05-small-neural-networks/`.
-- [ ] It compares a simple model and a neural network.
-- [ ] It includes plots.
-- [ ] It explains hidden layers in simple words.
+- [ ] Both models train in one script.
+- [ ] There are two boundary plots.
+- [ ] `model_comparison.csv` exists.
+- [ ] `notes.md` explains hidden layers as extra flexible knobs.
+- [ ] The modification challenge result is recorded.
 
 ### Expertise gained
 
-After this issue, I can explain why neural networks are useful for problems that are not simple straight lines.
+After this issue, I can explain why neural networks are useful for nonlinear patterns.
 
 ---
 
-## Issue 7: Week 6 — Train an image classifier baseline
+## Issue 7: Week 6 — Fashion-MNIST Baseline: train a real image classifier
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `computer-vision`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 6
+**Blocked by:** #6
 
-### Simple goal
+### Project name
 
-Move from toy data to real images without losing the core loop.
+**Fashion-MNIST Baseline Classifier**
 
-An image is just numbers arranged in a grid. The model learns patterns in those numbers.
+### Why this exists
+
+This is the first real image project. The goal is not state-of-the-art accuracy. The goal is to see that an image is numbers, and the same learning loop still works.
+
+### What to build
+
+Train a baseline Fashion-MNIST classifier and save examples, predictions, metrics, and the model.
+
+### Dataset
+
+Use torchvision to download Fashion-MNIST:
+
+```python
+from torchvision.datasets import FashionMNIST
+```
+
+Store downloaded data under:
+
+- `data/fashion-mnist/`
+
+### Exact files to create
+
+- `weeks/week-06-image-classification-baseline/train_fashion_mnist_baseline.py`
+- `weeks/week-06-image-classification-baseline/notes.md`
+- `models/week-06-fashion-mnist-baseline.pt`
+- `artifacts/week-06-image-classification-baseline/sample_images.png`
+- `artifacts/week-06-image-classification-baseline/loss_accuracy_curves.png`
+- `artifacts/week-06-image-classification-baseline/sample_predictions.png`
+- `artifacts/week-06-image-classification-baseline/metrics.json`
 
 ### Online resources
 
 - Learn PyTorch — 03 Computer Vision: https://www.learnpytorch.io/03_pytorch_computer_vision/
 - PyTorch Quickstart: https://docs.pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html
-- PyTorch torchvision datasets: https://docs.pytorch.org/vision/stable/datasets.html
+- torchvision datasets: https://docs.pytorch.org/vision/stable/datasets.html
 
-### Mini-project
-
-Train a baseline image classifier on Fashion-MNIST.
-
-### Steps
+### Step-by-step work
 
 - [ ] Download Fashion-MNIST with torchvision.
-- [ ] Show several example images and labels.
-- [ ] Build a small baseline model.
-- [ ] Train it.
-- [ ] Measure train and test accuracy.
-- [ ] Print a few predictions.
-- [ ] Save a plot or example grid into `artifacts/`.
+- [ ] Show a grid of example images and labels.
+- [ ] Build a simple baseline model, such as flatten image -> linear layers.
+- [ ] Train for a small number of epochs.
+- [ ] Log train loss and test accuracy.
+- [ ] Save the model.
+- [ ] Save a plot of loss and accuracy.
+- [ ] Save a grid of sample predictions.
+- [ ] Write notes explaining how an image becomes a tensor.
 
 ### Modification challenge
 
-Change batch size or learning rate. Predict what might happen. Run and explain.
+Change one of these:
+
+- batch size
+- learning rate
+- number of epochs
+
+Before running, predict what should change. Then run and explain.
+
+### Debugging checklist
+
+- [ ] If download fails, retry or check network access.
+- [ ] If tensors have wrong shape, print one batch shape.
+- [ ] If CUDA fails, run on CPU.
+- [ ] If accuracy is very low, inspect image labels and loss function.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-06-image-classification-baseline/`.
-- [ ] It loads Fashion-MNIST locally.
-- [ ] It shows example images.
-- [ ] It trains a classifier.
-- [ ] It reports test accuracy.
+- [ ] The script downloads/loads Fashion-MNIST.
+- [ ] `sample_images.png` exists.
+- [ ] A model file exists in `models/`.
+- [ ] `metrics.json` includes train loss and test accuracy.
+- [ ] `sample_predictions.png` exists.
+- [ ] `notes.md` explains image tensors in plain words.
 
 ### Expertise gained
 
-After this issue, I can train a small image classifier and explain the image training loop.
+After this issue, I can train a small image classifier and explain the image classification workflow.
 
 ---
 
-## Issue 8: Week 7 — Improve the model and practice debugging
+## Issue 8: Week 7 — Model Improvement Lab: debug and compare experiments
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `debugging`, `computer-vision`, `weekly-project`  
 **Time estimate:** 4–6 hours  
-**Blocked by:** Issue 7
+**Blocked by:** #7
 
-### Simple goal
+### Project name
 
-Learn that improving a model is not random guessing.
+**Image Classifier Improvement Lab**
 
-Use small experiments and the debugging ritual.
+### Why this exists
+
+Improving a model should not mean randomly changing things. This project teaches small experiments and a repeatable debugging ritual.
+
+### What to build
+
+Take the Week 6 Fashion-MNIST baseline and run controlled improvement experiments.
+
+Examples:
+
+- baseline MLP vs tiny CNN
+- learning rate A vs learning rate B
+- 3 epochs vs 6 epochs
+- with or without simple normalization
+
+### Dataset
+
+Reuse Fashion-MNIST from Week 6.
+
+### Exact files to create
+
+- `weeks/week-07-improving-and-debugging/run_fashion_mnist_experiments.py`
+- `weeks/week-07-improving-and-debugging/debug_report.md`
+- `models/week-07-best-fashion-mnist.pt`
+- `artifacts/week-07-improving-and-debugging/experiment_log.csv`
+- `artifacts/week-07-improving-and-debugging/loss_accuracy_comparison.png`
+- `artifacts/week-07-improving-and-debugging/tiny_overfit_check.txt`
+- `artifacts/week-07-improving-and-debugging/best_vs_baseline.md`
 
 ### Online resources
 
@@ -410,112 +749,164 @@ Use small experiments and the debugging ritual.
 - PyTorch — Training a Classifier: https://docs.pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 - PyTorch — TensorBoard tutorial: https://docs.pytorch.org/tutorials/intermediate/tensorboard_tutorial.html
 
-### Mini-project
+### Step-by-step work
 
-Take the Week 6 image classifier and improve it with one or two careful changes.
+- [ ] Load or recreate the Week 6 baseline.
+- [ ] Create an experiment table with at least three runs.
+- [ ] For each run, record:
+  - model name
+  - learning rate
+  - batch size
+  - epochs
+  - final train loss
+  - final test accuracy
+  - notes
+- [ ] Add a tiny-overfit check: train on a very small subset and confirm the model can memorize it.
+- [ ] Save the experiment log to CSV.
+- [ ] Plot loss/accuracy comparison.
+- [ ] Save the best model.
+- [ ] Write `debug_report.md` using the debugging ritual.
 
-Possible changes:
+### Required debugging ritual
 
-- Better learning rate.
-- More epochs.
-- Small CNN instead of flat model.
-- Simple data transform.
-- Better train/test logging.
+Complete this checklist in `debug_report.md`:
 
-### Debugging ritual to practice
-
-- [ ] Check shapes.
-- [ ] Inspect raw examples and labels.
-- [ ] Run one tiny batch.
-- [ ] Try to overfit a tiny dataset.
-- [ ] Print loss values.
-- [ ] Print sample predictions.
-- [ ] Check CPU/GPU device placement.
-- [ ] Try a smaller learning rate.
-- [ ] Compare expected behavior vs actual behavior.
+- [ ] I checked input shapes.
+- [ ] I inspected raw images and labels.
+- [ ] I ran one tiny batch.
+- [ ] I tried to overfit a tiny dataset.
+- [ ] I printed losses.
+- [ ] I printed sample predictions.
+- [ ] I checked CPU/GPU device placement.
+- [ ] I tried or considered a smaller learning rate.
+- [ ] I compared expected behavior with actual behavior.
 
 ### Modification challenge
 
-Run two experiments. Predict which one should help more. Then compare results.
+Pick two improvement ideas before running them.
+
+For each idea, write:
+
+- what I changed
+- why I think it might help
+- what I expect to happen
+- what actually happened
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-07-improving-and-debugging/`.
-- [ ] It compares at least two runs.
-- [ ] It includes loss/accuracy logs or plots.
-- [ ] It includes a debugging note.
-- [ ] It explains which change helped and why.
+- [ ] At least three experiment runs are recorded.
+- [ ] `experiment_log.csv` exists.
+- [ ] `tiny_overfit_check.txt` exists.
+- [ ] `loss_accuracy_comparison.png` exists.
+- [ ] `week-07-best-fashion-mnist.pt` exists.
+- [ ] `debug_report.md` contains the debugging ritual checklist.
 
 ### Expertise gained
 
-After this issue, I can improve a model using small experiments and debug common training problems.
+After this issue, I can improve a model using controlled experiments and debug common training failures.
 
 ---
 
-## Issue 9: Week 8 — Final capstone: image classifier mistake explorer
+## Issue 9: Week 8 — Mistake Explorer Capstone: inspect confident wrong images
 
 **Type:** HITL  
 **Labels:** `HITL`, `course`, `pytorch`, `computer-vision`, `capstone`, `weekly-project`  
 **Time estimate:** 5–7 hours  
-**Blocked by:** Issue 8
+**Blocked by:** #8
 
-### Simple goal
+### Project name
 
-Stop only looking at accuracy.
+**Fashion-MNIST Mistake Explorer**
 
-Look at mistakes. Ask:
+### Why this exists
 
-- What did the model get wrong?
-- Was it confidently wrong?
-- Are some classes confused more than others?
-- Did my improvement actually help?
+Accuracy is only one number. Real understanding comes from looking at what the model gets wrong.
+
+This capstone turns the image classifier into an inspection tool.
+
+### What to build
+
+Build a script or notebook that loads the best image classifier, runs it on test images, finds mistakes, and creates a small mistake report.
+
+The report should show:
+
+- correct predictions
+- wrong predictions
+- confident wrong predictions
+- a confusion matrix
+- the most confused class pairs
+- one before/after comparison after an improvement attempt
+
+### Dataset
+
+Reuse Fashion-MNIST.
+
+### Exact files to create
+
+- `weeks/week-08-mistake-explorer-capstone/mistake_explorer.py`
+- `weeks/week-08-mistake-explorer-capstone/final_reflection.md`
+- `artifacts/week-08-mistake-explorer-capstone/confusion_matrix.png`
+- `artifacts/week-08-mistake-explorer-capstone/confident_wrong_predictions.png`
+- `artifacts/week-08-mistake-explorer-capstone/correct_predictions.png`
+- `artifacts/week-08-mistake-explorer-capstone/class_pair_mistakes.csv`
+- `artifacts/week-08-mistake-explorer-capstone/before_after_improvement.md`
+- `artifacts/week-08-mistake-explorer-capstone/final_metrics.json`
 
 ### Online resources
 
 - Learn PyTorch — 03 Computer Vision: https://www.learnpytorch.io/03_pytorch_computer_vision/
-- Learn PyTorch — 04 Custom Datasets, optional: https://www.learnpytorch.io/04_pytorch_custom_datasets/
 - TorchMetrics — Confusion Matrix: https://lightning.ai/docs/torchmetrics/latest/classification/confusion_matrix.html
 - PyTorch — Visualizing Models, Data, and Training with TensorBoard: https://docs.pytorch.org/tutorials/intermediate/tensorboard_tutorial.html
 
-### Mini-project
-
-Build a mistake explorer for the image classifier.
-
-The explorer should show:
-
-- Correct predictions.
-- Wrong predictions.
-- Confident wrong predictions.
-- A confusion matrix.
-- Example images for the worst mistakes.
-- A short before/after comparison after one improvement.
-
-### Steps
+### Step-by-step work
 
 - [ ] Load the best Week 7 model.
-- [ ] Run predictions on the test set.
-- [ ] Store true labels, predicted labels, and confidence scores.
-- [ ] Show the most confident wrong predictions.
-- [ ] Create a confusion matrix.
-- [ ] Pick one improvement attempt.
-- [ ] Compare before and after.
-- [ ] Write a final plain-language explanation.
+- [ ] Run predictions on the Fashion-MNIST test set.
+- [ ] Store true label, predicted label, and confidence for each image.
+- [ ] Save final metrics as JSON.
+- [ ] Create a confusion matrix plot.
+- [ ] Find the top confident wrong predictions.
+- [ ] Save a grid of confident wrong images.
+- [ ] Save a grid of correct predictions for comparison.
+- [ ] Count the most common class-pair mistakes.
+- [ ] Pick one improvement attempt and compare before vs after.
+- [ ] Write a final reflection in plain language.
 
 ### Modification challenge
 
-Change one training setting or model detail. Predict which mistakes should improve. Run and explain what actually happened.
+Pick one mistake pattern, for example:
+
+- shirts confused with t-shirts
+- sandals confused with sneakers
+- coats confused with pullovers
+
+Before changing anything, write:
+
+- why I think the model confuses these classes
+- what change might help
+- what result I expect
+
+Then run the change and explain what happened.
+
+### Debugging checklist
+
+- [ ] If confidence values look wrong, check softmax is applied on the correct dimension.
+- [ ] If the confusion matrix labels are wrong, check class-name order.
+- [ ] If image grids show wrong labels, inspect indexing.
+- [ ] If before/after is unfair, make sure both models use the same test set.
 
 ### Acceptance criteria
 
-- [ ] There is a notebook or script in `weeks/week-08-mistake-explorer-capstone/`.
-- [ ] It shows confident wrong predictions.
-- [ ] It creates a confusion matrix.
-- [ ] It compares before and after one improvement.
-- [ ] It includes a final note: “What I now understand about how computers learn.”
+- [ ] `mistake_explorer.py` runs.
+- [ ] `confusion_matrix.png` exists.
+- [ ] `confident_wrong_predictions.png` exists.
+- [ ] `class_pair_mistakes.csv` exists.
+- [ ] `before_after_improvement.md` exists.
+- [ ] `final_reflection.md` answers: “What do I now understand about how computers learn?”
 
 ### Expertise gained
 
-After this issue, I can inspect model failures, explain them in simple words, and improve a model with evidence instead of vibes.
+After this issue, I can inspect model failures, reason about mistakes, and improve a model using evidence instead of vibes.
 
 ---
 
@@ -523,12 +914,14 @@ After this issue, I can inspect model failures, explain them in simple words, an
 
 After all issues, I should be able to:
 
-- Explain machine learning as repeated correction.
-- Build small PyTorch training loops.
-- Use tensors, loss, optimizers, datasets, and dataloaders.
-- Explain `backward()` without heavy derivative formulas.
-- Train number prediction and image classification models.
-- Use CPU or CUDA when available.
-- Debug models with a repeatable ritual.
-- Look at image-classifier mistakes and learn from them.
-- Read beginner ML/PyTorch resources without feeling totally lost.
+- Set up and run a local PyTorch project.
+- Explain learning as repeated correction.
+- Build a tiny learner by hand.
+- Rebuild the same idea in PyTorch.
+- Train and evaluate a regression model.
+- Train and inspect classification models.
+- Explain why hidden layers help with nonlinear patterns.
+- Train a small Fashion-MNIST image classifier.
+- Run controlled improvement experiments.
+- Use a repeatable debugging ritual.
+- Build a mistake explorer and explain model failures in plain words.

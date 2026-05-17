@@ -1,14 +1,14 @@
 # Intuitive Understanding of Machine Learning
 
-A simple, practical, local-first course for understanding how computers learn.
+A practical, local-first course for building real intuition about how computers learn.
 
-This course is for **me**. It assumes I can program, but it assumes I am **new to machine learning, deep learning, neural networks, and PyTorch**.
+This course is for **me**. It assumes I can program, but it does **not** assume I already understand machine learning, deep learning, neural networks, or PyTorch.
 
-It uses simple words on purpose. No shame. No pretending. If a word is important, the course should explain it before using it too much.
+Tone rule: use **clear beginner-friendly words without being condescending**. Explain new ML ideas directly. Avoid pretending everything is obvious. Also avoid treating the learner like they cannot think.
 
 ## The Big Idea
 
-A model is a guesser.
+A model is a guesser with adjustable knobs.
 
 Training means:
 
@@ -30,8 +30,6 @@ This course keeps coming back to that loop.
 
 This is an **8-week course** after the local setup is done.
 
-Simple estimate:
-
 | Part | Time |
 | --- | ---: |
 | One-time local setup | 2–4 hours |
@@ -43,21 +41,22 @@ Simple estimate:
 Practical calendar estimate:
 
 - Normal pace: **8 weeks**, about **4–6 hours per week**.
-- If setup is annoying: add one extra setup day or stretch to **9 weeks**.
+- If setup is annoying: add one setup day or stretch to **9 weeks**.
 - If a week feels hard: repeat that week. Repeating is not failure. It is how learning works.
 
 ## What I Should Be Able To Do By The End
 
 By the end, I should be able to:
 
-- Explain, in plain words, how a computer can “learn” from examples.
+- Explain, in plain words, how a computer can learn from examples.
 - Build small PyTorch models locally.
 - Train a model that predicts numbers.
+- Train a model that classifies 2D points.
 - Train a model that classifies images.
 - Look at model mistakes and explain what probably went wrong.
-- Use a simple debugging ritual when training fails.
+- Use a repeatable debugging ritual when training fails.
 - Understand PyTorch basics like tensors, datasets, dataloaders, loss, optimizers, and `backward()` at an intuitive level.
-- Use my local machine, including my NVIDIA RTX 4070 SUPER when CUDA works, but keep CPU fallbacks.
+- Use my local machine, including my NVIDIA RTX 4070 SUPER when CUDA works, while keeping CPU fallbacks.
 
 This is **not** a heavy math course. We can talk about derivatives as “which way should the model move?”, but we will not drown in formulas.
 
@@ -73,9 +72,9 @@ Why this is the main spine:
 - It is beginner-friendly.
 - It uses PyTorch.
 - It has real code and real projects.
-- It covers the pieces this course needs: tensors, workflows, classification, and computer vision.
+- It covers tensors, workflows, classification, and computer vision.
 
-Important: this repo does **not** blindly copy that course. It uses it as a guide, then adds simpler explanations, smaller local projects, weekly mini-projects, and debugging habits.
+Important: this repo does **not** blindly copy that course. It uses it as a guide, then adds smaller local projects, explicit deliverables, reflection notes, and debugging habits.
 
 ## Other Important Free Resources
 
@@ -122,23 +121,23 @@ Planned tools:
 - torchvision
 - NumPy
 - Matplotlib
-- Jupyter notebooks
-- scikit-learn only when useful for tiny toy datasets or metrics
-- torchmetrics for final confusion matrix / mistake analysis
+- pandas
+- Jupyter notebooks if useful
+- scikit-learn for small generated toy datasets
+- torchmetrics for the final confusion matrix / mistake analysis
 
 ### Suggested setup steps
 
 Install `uv` first:
 
 ```bash
-# See: https://docs.astral.sh/uv/
 uv --version
 ```
 
 Create or use this repo:
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/majorgilles/intuitive_understanding_machine_learning.git
 cd intuitive_understanding_machine_learning
 ```
 
@@ -191,6 +190,7 @@ Planned layout:
 ├── docs/
 │   └── github-issue-drafts.md
 ├── weeks/
+│   ├── week-00-setup/
 │   ├── week-01-learning-loop/
 │   ├── week-02-pytorch-basics/
 │   ├── week-03-number-prediction/
@@ -200,9 +200,10 @@ Planned layout:
 │   ├── week-07-improving-and-debugging/
 │   └── week-08-mistake-explorer-capstone/
 ├── src/
-│   └── shared helper code later
+│   └── mlcourse/
+│       └── shared helper code
 ├── data/
-│   └── downloaded datasets, not committed
+│   └── generated/downloaded datasets, not committed
 ├── models/
 │   └── trained model files, not committed
 └── artifacts/
@@ -211,20 +212,22 @@ Planned layout:
 
 ## Weekly Rhythm
 
-Each week should follow this pattern:
+Each week should produce something concrete.
+
+Pattern:
 
 1. Read or watch a short resource.
-2. Write down the idea in simple words.
-3. Build something locally.
-4. Change one or two things.
-5. Predict what the change should do.
-6. Run it.
-7. Explain what happened.
-8. Save a small artifact: notebook, script, plot, model, or note.
+2. Build the required project files.
+3. Run the project locally.
+4. Save the required artifacts.
+5. Change one or two things.
+6. Predict what the change should do before running.
+7. Run it.
+8. Explain what happened in `notes.md` or a report.
 
 ## The Debugging Ritual
 
-When training fails, do not panic. Use this ritual:
+When training fails, use this ritual:
 
 1. Check shapes.
 2. Look at a few raw examples and labels.
@@ -236,77 +239,27 @@ When training fails, do not panic. Use this ritual:
 8. Try a smaller learning rate.
 9. Compare what I expected with what actually happened.
 
-The goal is to make failure boring and diagnosable.
+The goal is to make failure diagnosable instead of mysterious.
 
-## 8-Week Plan
+## Tangible Project Plan
 
-Each week is about **4–6 hours**. The final capstone may take **5–7 hours**.
+The detailed GitHub issues are the source of truth for each project. This table shows the concrete deliverables.
 
-### Week 1 — See Learning Happen By Hand
-
-Goal: understand the learning loop before PyTorch hides anything.
-
-Mini-project: build a tiny model with one or two numbers as “knobs.” Make it predict a simple line like `y = 2x + 1`. Show guesses, wrongness, and improvement.
-
-Expertise gained: I can explain “learning” as repeated adjustment, not magic.
-
-### Week 2 — PyTorch Basics Without Panic
-
-Goal: learn tensors, devices, and autograd in simple words.
-
-Mini-project: recreate the tiny learning loop in PyTorch and inspect gradients as “hints for how to move.”
-
-Expertise gained: I can use tensors and understand what `backward()` is doing at a high level.
-
-### Week 3 — Predict Numbers With A Real Training Loop
-
-Goal: train/test split, loss, optimizer, epochs, and evaluation.
-
-Mini-project: train a simple PyTorch model to predict numbers, then plot predictions vs actual values.
-
-Expertise gained: I can build a basic supervised learning workflow.
-
-### Week 4 — Classification: Teaching A Model To Choose A Category
-
-Goal: understand classification as choosing between labels.
-
-Mini-project: classify simple 2D points and visualize the decision boundary.
-
-Expertise gained: I can explain probabilities, labels, accuracy, and classification mistakes.
-
-### Week 5 — Small Neural Networks
-
-Goal: understand hidden layers as extra flexible “knobs.”
-
-Mini-project: train a small neural network on a toy nonlinear dataset and compare it to a too-simple model.
-
-Expertise gained: I can explain why hidden layers help with non-straight-line problems.
-
-### Week 6 — Image Classification Baseline
-
-Goal: classify images with a small PyTorch model.
-
-Mini-project: train a Fashion-MNIST image classifier, inspect images, and print sample predictions.
-
-Expertise gained: I can train a small image classifier and understand the data/model/loss loop.
-
-### Week 7 — Improve The Model And Debug It
-
-Goal: learn that better training comes from careful experiments, not random guessing.
-
-Mini-project: change learning rate, model size, epochs, or architecture. Compare results. Practice the debugging ritual.
-
-Expertise gained: I can run small experiments and diagnose common training problems.
-
-### Week 8 — Final Capstone: Image Classifier + Mistake Explorer
-
-Goal: inspect model mistakes instead of only celebrating accuracy.
-
-Mini-project: build a mistake explorer that shows confident wrong predictions, confusion matrix, example images, and a short explanation of what changed after one improvement attempt.
-
-Expertise gained: I can train a model, inspect its failures, improve it carefully, and explain what I learned in plain words.
+| Issue | Time | Project | Main files/artifacts | Expertise gained |
+| --- | ---: | --- | --- | --- |
+| #1 | 2–4h | Local ML Lab Smoke Test | `weeks/week-00-setup/check_environment.py`, `src/mlcourse/device.py`, `artifacts/week-00-setup/device_check.txt` | Run local PyTorch and check CPU/CUDA |
+| #2 | 4–6h | Manual Line Learner | `manual_line_learner.py`, `loss_curve.png`, `before_after_predictions.csv` | Explain learning as repeated knob adjustment |
+| #3 | 4–6h | PyTorch Gradient Learner | `torch_line_learner.py`, `gradient_trace.csv`, `loss_curve.png` | Understand tensors and `backward()` intuitively |
+| #4 | 4–6h | House-ish Price Predictor | generated CSV, trained model, predicted-vs-actual plot | Build a regression train/test workflow |
+| #5 | 4–6h | Decision Boundary Lab | 2D points CSV, decision-boundary plot, confusion counts | Explain classification visually |
+| #6 | 4–6h | Hidden Layer Lab | linear vs MLP boundary plots, comparison CSV | Explain why hidden layers help nonlinear data |
+| #7 | 4–6h | Fashion-MNIST Baseline | sample image grid, model file, metrics JSON, predictions grid | Train a real image classifier |
+| #8 | 4–6h | Image Classifier Improvement Lab | experiment log, tiny-overfit check, best model, debug report | Improve and debug models systematically |
+| #9 | 5–7h | Fashion-MNIST Mistake Explorer | confusion matrix, confident-wrong grid, class-pair mistakes, final reflection | Inspect failures and improve with evidence |
 
 ## GitHub Issues
+
+The course issues are HITL because each one requires human inspection, judgment, and a short explanation.
 
 Issue drafts are in:
 
@@ -314,12 +267,16 @@ Issue drafts are in:
 
 Each issue includes:
 
-- Time estimate
-- Simple goal
-- Online resources
-- Work steps
-- Acceptance criteria
-- Expertise gained
+- project name
+- exact files to create
+- dataset to use
+- online resources
+- step-by-step work
+- modification challenge
+- debugging checklist
+- acceptance criteria
+- time estimate
+- expertise gained
 
 ## Final Expertise At The End Of The Course
 
@@ -327,7 +284,7 @@ At the end of this course, I should **not** pretend to be an ML expert yet.
 
 I should be a **practical beginner with real intuition**. That means I can build small things, explain what is happening, and debug common problems without panicking.
 
-### I should understand these ideas in simple words
+### I should understand these ideas in clear words
 
 - A **model** is a guesser with adjustable knobs.
 - **Training** means making guesses, measuring wrongness, and adjusting the knobs.
@@ -363,9 +320,9 @@ When a model does not learn, I should know how to:
 - Lower the learning rate.
 - Compare what I expected with what actually happened.
 
-### My level after the cursus
+### My level after the course
 
-After the cursus, my expected level is:
+After the course, my expected level is:
 
 > **Beginner-to-lower-intermediate practical ML learner.**
 
