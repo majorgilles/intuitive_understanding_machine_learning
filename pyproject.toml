@@ -1,0 +1,32 @@
+[project]
+name = "intuitive-understanding-machine-learning"
+version = "0.1.0"
+description = "Small local ML labs for understanding how machines learn."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+   "numpy",
+   "matplotlib",
+   "pandas",
+   "scikit-learn",
+   "jupyter",
+   "ipykernel",
+   "tqdm",
+   "torch",
+   "torchvision",
+   "torchmetrics",
+   "ruff"
+]
+
+[tool.uv]
+package = false
+
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
