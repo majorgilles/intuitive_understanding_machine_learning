@@ -1,8 +1,8 @@
 # GitHub Issue Drafts
 
-These are the GitHub issue bodies for the course.
+These are the GitHub issue bodies for a project about understanding how machines work and learn by building small local ML projects.
 
-Tone rule: the issues should be **beginner-friendly and explicit**, but not condescending. Assume the learner can program, but is new to machine learning and PyTorch.
+Each issue should be direct, concrete, and focused on observable behavior: data, tensors, guesses, loss, gradients, boundaries, images, mistakes, or debugging.
 
 Every issue is **HITL** because the learner must run the work, inspect outputs, make a small judgment, and write a short explanation.
 

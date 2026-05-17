@@ -1,14 +1,14 @@
-# Intuitive Understanding of Machine Learning
+# Understanding How Machines Work and Learn
 
-A practical, local-first course for building real intuition about how computers learn.
+This project exists to make machine learning inspectable.
 
-This course is for **me**. It assumes I can program, but it does **not** assume I already understand machine learning, deep learning, neural networks, or PyTorch.
-
-Tone rule: use **clear beginner-friendly words without being condescending**. Explain new ML ideas directly. Avoid pretending everything is obvious. Also avoid treating the learner like they cannot think.
+Each lab builds a small local system, runs it, looks at what the machine did, and records what changed. The focus is the mechanics: data becomes tensors, models make guesses, loss measures error, optimizers adjust parameters, and debugging turns failures into evidence.
 
 ## The Big Idea
 
-A model is a guesser with adjustable knobs.
+A machine learning model is a guesser with adjustable knobs.
+
+A computer does not learn by magic. It follows a repeatable process: turn data into numbers, make a guess, measure how wrong the guess was, and adjust the knobs.
 
 Training means:
 
@@ -24,7 +24,7 @@ Short version:
 predict -> measure wrongness -> adjust -> repeat
 ```
 
-This course keeps coming back to that loop.
+This course keeps coming back to that loop so the machine feels inspectable instead of mysterious.
 
 ## Global Time Estimate
 
@@ -48,7 +48,7 @@ Practical calendar estimate:
 
 By the end, I should be able to:
 
-- Explain, in plain words, how a computer can learn from examples.
+- Explain, in plain words, how a machine can learn from examples by adjusting numbers.
 - Build small PyTorch models locally.
 - Train a model that predicts numbers.
 - Train a model that classifies 2D points.
@@ -56,6 +56,7 @@ By the end, I should be able to:
 - Look at model mistakes and explain what probably went wrong.
 - Use a repeatable debugging ritual when training fails.
 - Understand PyTorch basics like tensors, datasets, dataloaders, loss, optimizers, and `backward()` at an intuitive level.
+- Describe how data, tensors, model code, loss, optimizer, CPU/GPU device placement, and saved artifacts fit together.
 - Use my local machine, including my NVIDIA RTX 4070 SUPER when CUDA works, while keeping CPU fallbacks.
 
 This is **not** a heavy math course. We can talk about derivatives as “which way should the model move?”, but we will not drown in formulas.
@@ -259,7 +260,9 @@ The detailed GitHub issues are the source of truth for each project. This table 
 
 ## GitHub Issues
 
-The course issues are HITL because each one requires human inspection, judgment, and a short explanation.
+The course issues are HITL because understanding how machines work and learn requires human inspection, judgment, and a short explanation.
+
+Each issue is a small lab: build something, run it locally, look at what the machine did, and explain the result in plain words.
 
 Issue drafts are in:
 
@@ -282,7 +285,7 @@ Each issue includes:
 
 At the end of this course, I should **not** pretend to be an ML expert yet.
 
-I should be a **practical beginner with real intuition**. That means I can build small things, explain what is happening, and debug common problems without panicking.
+I should be a **practical beginner with real intuition about how machines work and learn**. That means I can build small things, explain what is happening, and debug common problems without panicking.
 
 ### I should understand these ideas in clear words
 
@@ -341,4 +344,4 @@ It does **not** mean:
 - I can design large models from scratch.
 - I can skip careful debugging.
 
-The win condition is simple: **ML should feel less like magic and more like a process I can inspect.**
+The win condition is simple: **machines that learn should feel less like magic and more like systems I can inspect.**
