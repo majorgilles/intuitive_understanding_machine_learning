@@ -26,3 +26,28 @@ print("First predictions:")
 
 for input_value, target, prediction in zip(x[:5], y[:5], starting_predictions[:5]):
    print(f"x={input_value: .1f}, target={target: .1f}, prediction={prediction: .1f}")
+
+errors = starting_predictions - y
+
+weight_gradient = float(np.mean(2 * errors * x))
+bias_gradient = float(np.mean(2 * errors))
+
+learning_rate = 0.01
+lost_history: list[float] = []
+for step in range(200):
+    predictions = predict(x, current_weight, current_bias)
+    loss = mean_squared_error(predictions, y)
+    lost_history.append(loss)
+
+    errors = predictions - y
+
+    weight_gradient = float(np.mean(2 * errors * x))
+    bias_gradient = float(np.mean(2 * errors))
+
+    current_weight = current_weight - learning_rate * weight_gradient
+    current_bias = current_bias - learning_rate * bias_gradient
+
+    print(f"After update weight at {step}:", current_weight)
+    print(f"After update bias at {step}:", current_bias)
+    print(f"Loss: {loss}")
+    print("-" * 20)
