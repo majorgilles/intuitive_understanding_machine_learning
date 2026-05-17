@@ -72,6 +72,7 @@ def main() -> None:
     project_root = Path(__file__).resolve().parents[2]
     artifact_dir = project_root / "artifacts" / "week-02-pytorch-basics"
     artifact_dir.mkdir(parents=True, exist_ok=True)
+    (artifact_dir / "cpu_or_cuda.txt").write_text(f"{device}\n", encoding="utf-8")
 
     np.savetxt(
         artifact_dir / "gradient_trace.csv",
