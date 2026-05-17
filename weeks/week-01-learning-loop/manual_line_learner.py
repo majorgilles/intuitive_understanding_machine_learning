@@ -1,5 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
+from pathlib import Path
+import matplotlib.pyplot as plt
 
 FloatArray = NDArray[np.float64]
 
@@ -33,11 +35,11 @@ weight_gradient = float(np.mean(2 * errors * x))
 bias_gradient = float(np.mean(2 * errors))
 
 learning_rate = 0.01
-lost_history: list[float] = []
+loss_history: list[float] = []
 for step in range(200):
     predictions = predict(x, current_weight, current_bias)
     loss = mean_squared_error(predictions, y)
-    lost_history.append(loss)
+    loss_history.append(loss)
 
     errors = predictions - y
 
@@ -51,3 +53,13 @@ for step in range(200):
     print(f"After update bias at {step}:", current_bias)
     print(f"Loss: {loss}")
     print("-" * 20)
+
+artifact_dir = Path("artifacts/week-01-learning-loop")
+artifact_dir.mkdir(parents=True, exist_ok=True)
+
+plt.plot(loss_history)
+plt.xlabel("Training step")
+plt.ylabel("Mean squared error")
+plt.title("Manual Line Learner loss curve")
+plt.savefig(artifact_dir / "loss_curve.png")
+plt.close()
