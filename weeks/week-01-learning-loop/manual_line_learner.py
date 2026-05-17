@@ -57,9 +57,11 @@ for step in range(200):
     current_weight = current_weight - learning_rate * weight_gradient
     current_bias = current_bias - learning_rate * bias_gradient
 
-    print(f"After update weight at {step}:", current_weight)
-    print(f"After update bias at {step}:", current_bias)
-    print(f"Loss: {loss}")
+    print(f"Current weight gradient after update at {step}: {weight_gradient:.12f}")
+    print(f"Current bias gradient after update at {step}: {bias_gradient:.12f}")
+    print(f"Current weight after update at {step}: {current_weight:.12f}")
+    print(f"Current bias after update at {step}: {current_bias:.12f}")
+    print(f"Loss: {loss:.12f}")
     print("-" * 20)
 
 project_root = Path(__file__).resolve().parents[2]
@@ -86,5 +88,5 @@ np.savetxt(
     comments="",
 )
 
-print("Ending weight:", current_weight)
-print("Ending bias:", current_bias)
+print(f"Ending weight: {current_weight:.12f}")
+print(f"Ending bias: {current_bias:.12f}")
