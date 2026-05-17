@@ -1,5 +1,8 @@
+from pathlib import Path
+import numpy as np
 import torch
 
+import matplotlib.pyplot as plt
 from mlcourse.device import get_device
 
 LEARNING_RATE = 0.01
@@ -65,6 +68,27 @@ def main() -> None:
         print("-" * 20)
     print("First trace row:", trace_rows[0])
     print("Last trace row:", trace_rows[-1])
+
+    project_root = Path(__file__).resolve().parents[2]
+    artifact_dir = project_root / "artifacts" / "week-02-pytorch-basics"
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+
+    np.savetxt(
+        artifact_dir / "gradient_trace.csv",
+        np.array(trace_rows, dtype=np.float64),
+        delimiter=",",
+        header="epoch,loss,weight,bias,weight_grad,bias_grad",
+        comments="",
+    )
+
+    loss_history = [row[1] for row in trace_rows]
+
+    plt.plot(loss_history)
+    plt.xlabel("Epoch")
+    plt.ylabel("Mean squared error")
+    plt.title("PyTorch Line Learner loss curve")
+    plt.savefig(artifact_dir / "loss_curve.png")
+    plt.close()
 
 
 if __name__ == "__main__":
