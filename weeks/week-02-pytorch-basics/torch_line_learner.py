@@ -3,6 +3,7 @@ import torch
 from mlcourse.device import get_device
 
 LEARNING_RATE = 0.01
+NUMBER_EPOCHS = 200
 
 
 def main() -> None:
@@ -18,7 +19,6 @@ def main() -> None:
 
     weight = torch.tensor(0.0, dtype=torch.float32, device=device, requires_grad=True)
     bias = torch.tensor(0.0, dtype=torch.float32, device=device, requires_grad=True)
-    optimizer = torch.optim.SGD([weight, bias], LEARNING_RATE)
 
     predictions = weight * x + bias
     errors = predictions - y
@@ -29,13 +29,42 @@ def main() -> None:
     print("Starting predictions:", predictions)
     print("Starting loss:", loss)
 
-    loss.backward()
-    print("Weight gradient:", weight.grad)
-    print("Bias gradient:", bias.grad)
+    optimizer = torch.optim.SGD([weight, bias], LEARNING_RATE)
+    trace_rows: list[list[float]] = []
+    for epoch in range(NUMBER_EPOCHS):
+        optimizer.zero_grad()  # clears old gradient hints so each update uses only the current loss
 
-    optimizer.step()
-    print("Updated weight:", weight)  # weight goes up
-    print("Updated bias:", bias)  # bias goes up
+        predictions = weight * x + bias  # the model
+        errors = predictions - y
+        loss = torch.mean(errors**2)
+
+        loss.backward()
+
+        print(f"Epoch {epoch}")
+        print(f"  loss: {loss.item():.6f}")
+        print(f"  weight before update: {weight.item():.6f}")
+        print(f"  bias before update: {bias.item():.6f}")
+        print(f"  weight gradient: {weight.grad.item():.6f}")
+        print(f"  bias gradient: {bias.grad.item():.6f}")
+
+        trace_rows.append(
+            [
+                float(epoch),
+                loss.item(),
+                weight.item(),
+                bias.item(),
+                weight.grad.item(),
+                bias.grad.item(),
+            ]
+        )
+
+        optimizer.step()
+
+        print(f"  weight after update: {weight.item():.6f}")
+        print(f"  bias after update: {bias.item():.6f}")
+        print("-" * 20)
+    print("First trace row:", trace_rows[0])
+    print("Last trace row:", trace_rows[-1])
 
 
 if __name__ == "__main__":
