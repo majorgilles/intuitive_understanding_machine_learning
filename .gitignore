@@ -20,8 +20,9 @@ data/*
 models/*
 !models/.gitkeep
 artifacts/*
-!artifacts/*.txt
 !artifacts/.gitkeep
+!artifacts/**/
+!artifacts/**/*.txt
 
 # OS/editor
 .DS_Store
