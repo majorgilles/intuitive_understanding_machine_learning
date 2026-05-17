@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+.env
+.env.*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Course generated files
+data/*
+!data/.gitkeep
+models/*
+!models/.gitkeep
+artifacts/*
+!artifacts/.gitkeep
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
