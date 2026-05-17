@@ -54,7 +54,8 @@ for step in range(200):
     print(f"Loss: {loss}")
     print("-" * 20)
 
-artifact_dir = Path("artifacts/week-01-learning-loop")
+project_root = Path(__file__).resolve().parents[2]
+artifact_dir = project_root / "artifacts" / "week-01-learning-loop"
 artifact_dir.mkdir(parents=True, exist_ok=True)
 
 plt.plot(loss_history)
