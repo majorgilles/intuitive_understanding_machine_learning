@@ -7,10 +7,12 @@ FloatArray = NDArray[np.float64]
 
 
 def predict(inputs: FloatArray, weight: float, bias: float) -> FloatArray:
+    """Model that predict the target using the current weight and bias."""
     return inputs * weight + bias
 
 
 def mean_squared_error(predictions: FloatArray, targets: FloatArray) -> float:
+    """Loss function"""
     errors = predictions - targets
     return float(np.mean(errors**2))
 
@@ -46,6 +48,9 @@ for step in range(200):
 
     errors = predictions - y
 
+    # We compute gradients to decide in which direction to adjust the weights for the next pass
+    # e.g. if the weight gradient is negative, then that means the current_weight will go up
+    # if the gradient is positive, the current_weight will go down
     weight_gradient = float(np.mean(2 * errors * x))
     bias_gradient = float(np.mean(2 * errors))
 
@@ -80,3 +85,6 @@ np.savetxt(
     header="x,target,before_prediction,after_prediction",
     comments="",
 )
+
+print("Ending weight:", current_weight)
+print("Ending bias:", current_bias)
