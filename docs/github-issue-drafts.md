@@ -9,6 +9,7 @@ Labels to use:
 - `pytorch`
 - `beginner`
 - `weekly-project`
+- `HITL`
 
 Optional labels:
 
@@ -21,8 +22,8 @@ Optional labels:
 
 ## Issue 1: Set up the local uv + PyTorch course repo
 
-**Type:** AFK  
-**Labels:** `course`, `setup`, `pytorch`, `beginner`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `setup`, `pytorch`, `beginner`  
 **Time estimate:** 2–4 hours  
 **Blocked by:** None
 
@@ -64,8 +65,8 @@ After this issue, I can set up and run a local PyTorch learning project without 
 
 ## Issue 2: Week 1 — See learning happen by hand
 
-**Type:** AFK  
-**Labels:** `course`, `learning`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 1
 
@@ -120,8 +121,8 @@ After this issue, I can explain machine learning as repeated correction, not mag
 
 ## Issue 3: Week 2 — Learn PyTorch tensors and `backward()` gently
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 2
 
@@ -176,8 +177,8 @@ After this issue, I can use basic PyTorch tensors and explain autograd at a begi
 
 ## Issue 4: Week 3 — Train a number prediction model with a real PyTorch loop
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 3
 
@@ -235,8 +236,8 @@ After this issue, I can train and evaluate a basic supervised PyTorch model.
 
 ## Issue 5: Week 4 — Classification: teach a model to choose a label
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 4
 
@@ -286,8 +287,8 @@ After this issue, I can explain how a model chooses between labels and how accur
 
 ## Issue 6: Week 5 — Build a small neural network for nonlinear data
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `learning`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 5
 
@@ -340,8 +341,8 @@ After this issue, I can explain why neural networks are useful for problems that
 
 ## Issue 7: Week 6 — Train an image classifier baseline
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `computer-vision`, `beginner`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `computer-vision`, `beginner`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 6
 
@@ -391,8 +392,8 @@ After this issue, I can train a small image classifier and explain the image tra
 
 ## Issue 8: Week 7 — Improve the model and practice debugging
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `debugging`, `computer-vision`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `debugging`, `computer-vision`, `weekly-project`  
 **Time estimate:** 4–6 hours  
 **Blocked by:** Issue 7
 
@@ -453,8 +454,8 @@ After this issue, I can improve a model using small experiments and debug common
 
 ## Issue 9: Week 8 — Final capstone: image classifier mistake explorer
 
-**Type:** AFK  
-**Labels:** `course`, `pytorch`, `computer-vision`, `capstone`, `weekly-project`  
+**Type:** HITL  
+**Labels:** `HITL`, `course`, `pytorch`, `computer-vision`, `capstone`, `weekly-project`  
 **Time estimate:** 5–7 hours  
 **Blocked by:** Issue 8
 

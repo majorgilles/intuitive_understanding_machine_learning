@@ -26,6 +26,26 @@ predict -> measure wrongness -> adjust -> repeat
 
 This course keeps coming back to that loop.
 
+## Global Time Estimate
+
+This is an **8-week course** after the local setup is done.
+
+Simple estimate:
+
+| Part | Time |
+| --- | ---: |
+| One-time local setup | 2–4 hours |
+| Weeks 1–7 | 4–6 hours each |
+| Week 8 capstone | 5–7 hours |
+| Main 8-week course total | 33–49 hours |
+| Total including setup | 35–53 hours |
+
+Practical calendar estimate:
+
+- Normal pace: **8 weeks**, about **4–6 hours per week**.
+- If setup is annoying: add one extra setup day or stretch to **9 weeks**.
+- If a week feels hard: repeat that week. Repeating is not failure. It is how learning works.
+
 ## What I Should Be Able To Do By The End
 
 By the end, I should be able to:
@@ -301,18 +321,67 @@ Each issue includes:
 - Acceptance criteria
 - Expertise gained
 
-## Final Expertise After The Whole Course
+## Final Expertise At The End Of The Course
 
-At the end, I should have beginner-level practical intuition for:
+At the end of this course, I should **not** pretend to be an ML expert yet.
 
-- What a model is
-- What training means
-- What loss means
-- What an optimizer does
-- Why learning rate matters
-- What tensors are
-- What `backward()` roughly does
-- How a neural network can classify images
-- Why models make mistakes
-- How to debug a model that does not learn
-- How to explain ML without hiding behind math words
+I should be a **practical beginner with real intuition**. That means I can build small things, explain what is happening, and debug common problems without panicking.
+
+### I should understand these ideas in simple words
+
+- A **model** is a guesser with adjustable knobs.
+- **Training** means making guesses, measuring wrongness, and adjusting the knobs.
+- **Loss** is the number that says “how wrong was the model?”
+- An **optimizer** is the tool that changes the knobs.
+- **Learning rate** controls how big each change is.
+- A **tensor** is a box/table/grid of numbers.
+- `backward()` asks PyTorch to calculate adjustment hints.
+- A **neural network** is a stack of adjustable steps that can learn flexible patterns.
+- **Accuracy** is useful, but it does not tell the whole story.
+- **Mistakes** are clues. They show what the model has not learned well.
+
+### I should be able to build these things
+
+- A tiny learning loop by hand.
+- A PyTorch version of the same learning loop.
+- A number prediction model.
+- A classification model for simple 2D points.
+- A small neural network for nonlinear data.
+- A Fashion-MNIST image classifier.
+- A mistake explorer that shows confident wrong predictions and a confusion matrix.
+
+### I should be able to debug these things
+
+When a model does not learn, I should know how to:
+
+- Check shapes.
+- Inspect raw examples and labels.
+- Run one tiny batch.
+- Overfit a tiny dataset.
+- Print losses and predictions.
+- Check CPU/GPU placement.
+- Lower the learning rate.
+- Compare what I expected with what actually happened.
+
+### My level after the cursus
+
+After the cursus, my expected level is:
+
+> **Beginner-to-lower-intermediate practical ML learner.**
+
+That means:
+
+- I can follow beginner PyTorch tutorials without feeling totally lost.
+- I can explain the basic learning loop to another beginner.
+- I can train small local models.
+- I can inspect model behavior instead of only looking at final accuracy.
+- I can continue into deeper topics later: CNNs, transfer learning, embeddings, transformers, or the math behind gradients.
+
+It does **not** mean:
+
+- I am ready to build production ML systems alone.
+- I deeply understand calculus-based backpropagation.
+- I can design large models from scratch.
+- I can skip careful debugging.
+
+The win condition is simple: **ML should feel less like magic and more like a process I can inspect.**
