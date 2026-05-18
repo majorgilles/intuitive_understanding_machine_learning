@@ -119,6 +119,74 @@ sigmoid(logit) + binary cross entropy
 
 It rewards confident correct predictions and punishes confident wrong predictions.
 
+A prediction alone is not enough to calculate BCE.
+
+For example, if the model predicts:
+
+```text
+p(class 1) = 0.95
+```
+
+that prediction is:
+
+- very good if the true label is `1`
+- very bad if the true label is `0`
+
+So BCE always needs both:
+
+```text
+model prediction + true label -> wrongness score
+```
+
+In code, that is why we call:
+
+```python
+loss = loss_function(logits, y_train_tensor)
+```
+
+The logits say what the model guessed. The labels say what the correct answers were.
+
+### BCE math notation
+
+For one training example:
+
+```text
+y = true label, either 0 or 1
+p = model's predicted probability that y is 1
+```
+
+Binary cross entropy is:
+
+```text
+BCE(y, p) = -[y * log(p) + (1 - y) * log(1 - p)]
+```
+
+This single formula handles both label cases.
+
+If the true label is `1`, then `y = 1`:
+
+```text
+BCE(1, p) = -log(p)
+```
+
+So the loss is small when `p` is close to `1`.
+
+If the true label is `0`, then `y = 0`:
+
+```text
+BCE(0, p) = -log(1 - p)
+```
+
+So the loss is small when `p` is close to `0`.
+
+Short version:
+
+```text
+BCE = -log(probability assigned to the true class)
+```
+
+For a batch of rows, PyTorch averages this penalty across the rows.
+
 Rough intuition:
 
 ```text
