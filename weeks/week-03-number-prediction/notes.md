@@ -64,6 +64,13 @@ test set influence training.
 
 After normalization, the mean of each training feature was approximately `0`.
 
+A normalized value is not a percentage and not a maximum. It tells me how far a
+feature is from the training average:
+
+- `0.0` means about average
+- `+1.0` means one standard deviation above average
+- `-2.0` means two standard deviations below average
+
 ### PyTorch tensors and shapes
 
 A tensor is PyTorch's container for numbers.
@@ -119,6 +126,29 @@ prediction =
 
 Because this is regression, the output is not a logit. It is directly interpreted
 as the predicted `MedHouseVal`.
+
+### How the model learns the target units
+
+The input features are normalized, but the target `MedHouseVal` is not.
+
+That means the model is trained to answer:
+
+```text
+given normalized inputs, output a number close to the original MedHouseVal
+```
+
+PyTorch does not know about dollars. The unit comes from the target numbers used
+in the loss:
+
+```python
+loss = loss_function(predictions, y_train_tensor)
+```
+
+Because `y_train_tensor` is in `MedHouseVal` units, the model's predictions learn
+to be in `MedHouseVal` units too.
+
+The normalized input values are unitless. A value like `+1.0` means one standard
+deviation above the training average, not the maximum.
 
 ## Next learning step
 
