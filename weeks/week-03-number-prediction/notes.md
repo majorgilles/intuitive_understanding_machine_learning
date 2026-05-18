@@ -170,6 +170,48 @@ The training loop repeated this pattern:
 predict -> measure loss -> compute gradients -> update weights and bias
 ```
 
+#### How PyTorch computes the 8 weight gradients
+
+In Week 1, the model had one input `x`, so the hand-written weight gradient was:
+
+```text
+weight_gradient = average(2 * errors * x)
+```
+
+Week 3 uses the same idea, but the model has 8 input columns instead of 1.
+Each input column gets its own weight, so PyTorch computes one adjustment hint
+for each weight:
+
+```text
+gradient_for_weight_1 = average(2 * errors * MedInc)
+gradient_for_weight_2 = average(2 * errors * HouseAge)
+gradient_for_weight_3 = average(2 * errors * AveRooms)
+gradient_for_weight_4 = average(2 * errors * AveBedrms)
+gradient_for_weight_5 = average(2 * errors * Population)
+gradient_for_weight_6 = average(2 * errors * AveOccup)
+gradient_for_weight_7 = average(2 * errors * Latitude)
+gradient_for_weight_8 = average(2 * errors * Longitude)
+```
+
+So the general rule is:
+
+```text
+gradient_for_one_weight = average(2 * errors * that_weight's_input_column)
+```
+
+The bias does not belong to any input column, so its gradient is:
+
+```text
+bias_gradient = average(2 * errors)
+```
+
+`loss.backward()` does this math automatically. It traces how each prediction
+used the 8 weights and the bias, then fills in `model.weight.grad` and
+`model.bias.grad` with the gradients.
+
+The important simple idea is that Week 3 is not a different kind of gradient.
+It is the Week 1 gradient formula applied once per feature column.
+
 The loss curve went down strongly, which shows that the model learned a better
 set of weights and bias than its random starting values.
 
