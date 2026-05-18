@@ -150,9 +150,87 @@ to be in `MedHouseVal` units too.
 The normalized input values are unitless. A value like `+1.0` means one standard
 deviation above the training average, not the maximum.
 
-## Next learning step
+## Final summary
 
-The next concept is loss.
+### Loss and training
 
-Loss is one number that measures how wrong the model's predictions are. For this
-regression project, I will use mean squared error.
+Loss is one number that measures how wrong the model's predictions are.
+
+For this regression project, I used mean squared error:
+
+```text
+error = prediction - true_value
+squared_error = error * error
+loss = average squared_error
+```
+
+The training loop repeated this pattern:
+
+```text
+predict -> measure loss -> compute gradients -> update weights and bias
+```
+
+The loss curve went down strongly, which shows that the model learned a better
+set of weights and bias than its random starting values.
+
+### Evaluation
+
+The final losses were close:
+
+```text
+train loss: about 0.56
+test loss: about 0.58
+```
+
+The closeness matters because the test set contains rows the model did not train
+on. Similar train and test loss suggest the model generalized reasonably for a
+simple baseline.
+
+I also computed RMSE, which is easier to interpret because it is back in
+`MedHouseVal`-like units:
+
+```text
+test RMSE: about 0.76 to 0.80 MedHouseVal units
+test RMSE in dollars: about $76,000 to $80,000
+```
+
+That means this first baseline is often off by roughly that amount on held-back
+examples.
+
+### Prediction plot
+
+The predicted-vs-actual plot compares one test example per dot:
+
+- dots on the red diagonal line are perfect predictions
+- dots above the line are overestimates
+- dots below the line are underestimates
+- dots far from the line have larger errors
+
+The plot shows a general upward trend, so the model learned a useful relationship.
+It also shows wide spread, so the model is still imperfect.
+
+The vertical stripe near actual `5.0` suggests the dataset has capped high-value
+homes, which is one reason real data can behave differently from clean toy data.
+
+### Saved artifacts
+
+This lab produced:
+
+- `data/raw/week-03-california-housing.csv`
+- `models/week-03-number-predictor.pt`
+- `artifacts/week-03-number-prediction/loss_curve.png`
+- `artifacts/week-03-number-prediction/predicted_vs_actual.png`
+- `artifacts/week-03-number-prediction/example_predictions.csv`
+
+### Main lesson
+
+A PyTorch model does not understand dollars or houses. It only sees numbers.
+The meaning comes from the dataset and the target column.
+
+Because the input features were normalized but the target stayed in original
+`MedHouseVal` units, the model learned to map normalized inputs to original-unit
+house value predictions.
+
+The model learned something real, but a single linear layer is only a baseline.
+Real housing values depend on messy factors, capped values, and patterns that may
+not be fully captured by a straight weighted recipe over 8 columns.
