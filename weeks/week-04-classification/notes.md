@@ -187,6 +187,58 @@ BCE = -log(probability assigned to the true class)
 
 For a batch of rows, PyTorch averages this penalty across the rows.
 
+### BCE gradient intuition
+
+For our linear classifier:
+
+```text
+logit = weight_1 * x_position + weight_2 * y_position + bias
+p = sigmoid(logit)
+y = true label
+```
+
+With `BCEWithLogitsLoss`, the important gradient signal is:
+
+```text
+d_loss / d_logit = p - y
+```
+
+This is different from mean squared error.
+
+For each training row:
+
+```text
+weight_1 gradient contribution = (p - y) * x_position
+weight_2 gradient contribution = (p - y) * y_position
+bias gradient contribution     = (p - y)
+```
+
+For a batch, PyTorch averages these contributions across rows.
+
+The gradient shapes match the parameter shapes:
+
+```text
+model.linear.weight.shape      = [1, 2]
+model.linear.weight.grad.shape = [1, 2]
+
+model.linear.bias.shape        = [1]
+model.linear.bias.grad.shape   = [1]
+```
+
+So the model learns:
+
+- one update signal for the `x_position` weight,
+- one update signal for the `y_position` weight,
+- one update signal for the bias.
+
+Short version:
+
+```text
+BCE-with-logits replaces "raw prediction error" with "probability error":
+
+p - y
+```
+
 Rough intuition:
 
 ```text
