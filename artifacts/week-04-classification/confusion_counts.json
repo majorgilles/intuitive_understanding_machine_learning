@@ -1,0 +1,8 @@
+{
+  "true_positive": 30,
+  "true_negative": 30,
+  "false_positive": 0,
+  "false_negative": 0,
+  "test_loss": 0.0621226541697979,
+  "test_accuracy": 1.0
+}
