@@ -262,3 +262,17 @@ Still unclear:
 Important correction:
 
 One visible bend in the final boundary does not necessarily equal one hidden unit. The final boundary comes from the combined score made by all hidden units and output-layer weights.
+
+## Hidden unit challenge findings
+
+Challenge results:
+
+- 4 hidden units: train accuracy `0.8725`, test accuracy `0.85`, final loss `0.266921`
+- 16 hidden units: train accuracy `0.9600`, test accuracy `0.93`, final loss `0.086871`
+- 64 hidden units: train accuracy `0.9625`, test accuracy `0.93`, final loss `0.077676`
+
+The prediction was mostly correct.
+
+Going from 4 to 16 hidden units helped a lot. Going from 16 to 64 reduced training loss slightly, but did not improve test accuracy.
+
+Conclusion: more hidden units can help, but more hidden units are not automatically better once the model has enough capacity for the dataset.
