@@ -191,3 +191,74 @@ The linear model produced a mostly straight boundary.
 The MLP produced a nonlinear boundary that bends around the moons and covers most of the red/class `1` points better.
 
 This supports the main lesson: hidden intermediate features plus ReLU let the model build a more flexible function than one direct linear recipe.
+
+## Current intuition checkpoint
+
+We clarified the vocabulary around model output and decision boundaries.
+
+For one dot in the plot, the model outputs one raw number called a logit.
+
+```text
+(x_position, y_position) -> model -> logit
+```
+
+The logit becomes a probability with sigmoid.
+
+```text
+sigmoid(logit) -> probability
+```
+
+The model prediction comes from thresholding that probability.
+
+```text
+probability >= 0.5 -> class 1
+probability < 0.5 -> class 0
+```
+
+The model does not output a decision boundary directly.
+
+The decision boundary is drawn by asking the model about many fake grid points and drawing the places where probability is `0.5`.
+
+## Current MLP understanding
+
+The linear model has one direct scoring formula, so its boundary is straight.
+
+The MLP has this structure:
+
+```text
+input point -> first linear layer -> ReLU -> second linear layer -> logit
+```
+
+The first linear layer plus ReLU creates 16 intermediate values.
+
+Each hidden unit uses the same formula template, but with different learned weights and bias:
+
+```text
+hidden_i = ReLU(weight_ix * x_position + weight_iy * y_position + bias_i)
+```
+
+The output layer combines those 16 hidden values into one final logit:
+
+```text
+logit = output_bias
+      + output_weight_1 * hidden_1
+      + output_weight_2 * hidden_2
+      + ...
+      + output_weight_16 * hidden_16
+```
+
+Current understanding:
+
+- ReLU can make a hidden value `0`, so that hidden value contributes nothing for that point.
+- Different hidden units have different learned weights and biases.
+- The output layer learns how much each hidden value should add or subtract.
+- The MLP fits the moon dataset better than the linear model.
+
+Still unclear:
+
+- how to visualize exactly how many ReLU pieces combine into the final curved-looking boundary
+- how individual hidden units relate to visible bends in the final decision boundary
+
+Important correction:
+
+One visible bend in the final boundary does not necessarily equal one hidden unit. The final boundary comes from the combined score made by all hidden units and output-layer weights.
