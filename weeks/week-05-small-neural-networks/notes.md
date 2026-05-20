@@ -67,11 +67,11 @@ It has:
 - 2 weights
 - 1 bias
 
-After continued training, the linear model reached:
+After the current notebook run, the linear model reached:
 
-- final train loss: `0.3238`
-- train accuracy: `0.848`
-- test accuracy: `0.820`
+- final train loss: `0.359879`
+- train accuracy: `0.825`
+- test accuracy: `0.810`
 
 The loss kept decreasing slowly, but the model still appears limited.
 
@@ -158,3 +158,36 @@ This better matches the concrete code view:
 ```text
 logit = linear_2(relu(linear_1(input_point)))
 ```
+
+## MLP training findings
+
+The MLP was trained for 2000 epochs with Adam.
+
+Observed result:
+
+- final MLP train loss: `0.0869`
+- MLP train accuracy: `0.960`
+- MLP test accuracy: `0.930`
+
+This is much better than the linear baseline.
+
+## Model comparison findings
+
+Current comparison table:
+
+- linear train accuracy: `0.825`
+- linear test accuracy: `0.810`
+- linear final loss: `0.359879`
+- MLP train accuracy: `0.960`
+- MLP test accuracy: `0.930`
+- MLP final loss: `0.086871`
+
+The MLP has lower loss and higher test accuracy, so it learned the curved pattern better.
+
+## Decision boundary findings
+
+The linear model produced a mostly straight boundary.
+
+The MLP produced a nonlinear boundary that bends around the moons and covers most of the red/class `1` points better.
+
+This supports the main lesson: hidden intermediate features plus ReLU let the model build a more flexible function than one direct linear recipe.
