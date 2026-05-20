@@ -76,3 +76,47 @@ After continued training, the linear model reached:
 The loss kept decreasing slowly, but the model still appears limited.
 
 Current interpretation: this is probably a model-capacity limit because the curved moon pattern cannot be cleanly separated by one straight boundary.
+
+## MLP interpretation
+
+An MLP stands for multilayer perceptron, but the biological language is only a metaphor.
+
+In code, the model is a chain of functions:
+
+```text
+logit = linear_2(relu(linear_1(input_point)))
+```
+
+The model contains stored weights and biases. Training changes those stored numbers.
+
+## Hidden units
+
+`HIDDEN_UNITS = 16` means the first linear layer creates 16 intermediate output numbers for each input row.
+
+It does not mean there are only 16 weights.
+
+Because each input row has 2 features, each hidden unit needs 2 weights and 1 bias:
+
+```text
+hidden_raw_i = weight_ix * x_position + weight_iy * y_position + bias_i
+```
+
+So the first layer has:
+
+- `16 * 2 = 32` weights
+- `16` biases
+- `48` learned numbers total
+
+## ReLU and named parameters
+
+The model structure is:
+
+```text
+0: Linear(2 -> 16)
+1: ReLU()
+2: Linear(16 -> 1)
+```
+
+`ReLU` does not appear in `named_parameters()` because it has no learned weights or biases.
+
+It still matters because it changes the function from one big linear recipe into a nonlinear chain that can bend the decision boundary.
