@@ -120,3 +120,25 @@ The model structure is:
 `ReLU` does not appear in `named_parameters()` because it has no learned weights or biases.
 
 It still matters because it changes the function from one big linear recipe into a nonlinear chain that can bend the decision boundary.
+
+## Connection-first diagram
+
+```mermaid
+flowchart LR
+    input["input row<br/>x_position, y_position"]
+    linear1["linear_1: R² → R¹⁶<br/>32 weights + 16 biases"]
+    hidden["16 learned intermediate numbers"]
+    relu["ReLU<br/>no learned params"]
+    linear2["linear_2: R¹⁶ → R¹<br/>16 weights + 1 bias"]
+    logit["logit"]
+
+    input --> linear1 --> hidden --> relu --> linear2 --> logit
+```
+
+This is the concrete view:
+
+```text
+logit = linear_2(relu(linear_1(input_point)))
+```
+
+The “neural network” language is shorthand. The actual code is a function chain with trainable connection weights.
