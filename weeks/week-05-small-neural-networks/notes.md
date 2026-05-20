@@ -123,22 +123,38 @@ It still matters because it changes the function from one big linear recipe into
 
 ## Connection-first diagram
 
-```mermaid
-flowchart LR
-    input["input row<br/>x_position, y_position"]
-    linear1["linear_1: R² → R¹⁶<br/>32 weights + 16 biases"]
-    hidden["16 learned intermediate numbers"]
-    relu["ReLU<br/>no learned params"]
-    linear2["linear_2: R¹⁶ → R¹<br/>16 weights + 1 bias"]
-    logit["logit"]
+The notebook draws a Pyplot diagram saved to:
 
-    input --> linear1 --> hidden --> relu --> linear2 --> logit
+```text
+artifacts/week-05-small-neural-networks/mlp_connections.png
 ```
 
-This is the concrete view:
+The diagram shows the model as:
+
+```text
+2 inputs -> 16 hidden values -> 1 logit
+```
+
+Weighted-operation counts:
+
+- `2 * 16 = 32` input-to-hidden weighted operations
+- `16 * 1 = 16` hidden-to-output weighted operations
+- `48` visible weighted operations total
+
+The circles are values.
+
+The lines are weighted operations: each line contains a learned weight and the multiplication that uses it.
+
+For one hidden output:
+
+```text
+hidden_raw_i = weight_ix * x_position + weight_iy * y_position + bias_i
+```
+
+So the input-to-hidden lines are not only stored weights. They are also the math operations that multiply an input value by its learned weight before the results are added together.
+
+This better matches the concrete code view:
 
 ```text
 logit = linear_2(relu(linear_1(input_point)))
 ```
-
-The “neural network” language is shorthand. The actual code is a function chain with trainable connection weights.
