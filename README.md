@@ -2,6 +2,10 @@
 
 This project exists to make machine learning inspectable.
 
+Random note: every model starts as a guess.
+
+Test note: small experiments make big ideas visible.
+
 Each lab builds a small local system, runs it, looks at what the machine did, and records what changed. The focus is the mechanics: data becomes tensors, models make guesses, loss measures error, optimizers adjust parameters, and debugging turns failures into evidence.
 
 ## The Big Idea
