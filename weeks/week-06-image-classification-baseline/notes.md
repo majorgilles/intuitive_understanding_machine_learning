@@ -14,6 +14,7 @@ So far it:
 - inspects one batch of images and labels
 - saves `sample_images.png`
 - defines a first baseline model
+- runs one optimizer update on one batch
 
 ## Image shape
 
@@ -68,13 +69,77 @@ Explanation:
 2. `nn.Linear(784, 10)` produces 10 raw class scores.
 3. The highest score will become the predicted clothing class later.
 
+## Logits vs probabilities
+
+The model outputs raw class scores called logits.
+
+For one batch, the shape is:
+
+`[32, 10]`
+
+Meaning:
+
+- `32`: images in the batch
+- `10`: one raw score for each clothing class
+
+These are not probabilities yet. They do not have to be between `0.0` and `1.0`.
+
+## Cross-entropy
+
+Cross-entropy punishes the model when it gives low probability to the correct class.
+
+For one example:
+
+`cross entropy = -log(probability assigned to the correct class)`
+
+Examples:
+
+- correct class probability `0.90` -> low loss
+- correct class probability `0.10` -> high loss
+- correct class probability `0.01` -> very high loss
+
+In PyTorch, `nn.CrossEntropyLoss()` expects raw logits. It applies the needed softmax-like probability calculation internally.
+
+## CrossEntropyLoss vs BCE
+
+Use `CrossEntropyLoss` when each example has exactly one correct class.
+
+Fashion-MNIST fits this:
+
+`one image -> one clothing class`
+
+Use BCE, Binary Cross Entropy, for yes/no questions or multi-label problems.
+
+Examples:
+
+- yes/no: `is this a shirt?`
+- multi-label: `has shirt`, `has hat`, `has shoe`
+
+Fashion-MNIST is not multi-label because one image is labeled as one class.
+
+## One-batch sanity check
+
+The one-batch update produced:
+
+- loss before one update: `2.3484`
+- loss after one update: `2.2696`
+
+This does not prove the whole model is trained yet. It only confirms the basic learning pipeline works:
+
+`logits -> loss -> gradients -> optimizer step -> changed weights`
+
 ## Current checkpoint
 
-We have not trained the model yet.
+Completed:
+
+- loaded Fashion-MNIST
+- inspected image and batch shapes
+- saved sample image grid
+- built a flatten-then-linear baseline model
+- ran one training update on one batch
 
 Next learning step:
 
-- define a loss function
-- define an optimizer
-- run a small training loop
+- write a full training loop over many batches
+- track average train loss
 - measure test accuracy
